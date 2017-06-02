@@ -1,0 +1,114 @@
+package com.base.core;
+
+import com.base.rendering.RenderUtil;
+import com.base.rendering.Window;
+
+//import static org.lwjgl.opengl.GL11.glClearColor;
+
+//import org.lwjgl.opengl.GL;
+
+public class CoreEngine {
+	private boolean isRunning;
+	private Game game;
+	private int width;
+	private int height;
+	private double frameTime;
+	
+	public CoreEngine(int width, int height, double frameRate, Game game) {
+		this.game = game;
+		this.isRunning = false;
+		this.width = width;
+		this.height = height;
+		this.frameTime = 1.0/frameRate;
+	}
+	
+	private void initaliseRenderingSystem() {
+		RenderUtil.initGraphics();
+	}
+	
+	public void createWindow(String title) {
+		Window.createWindow(width, height, title);
+		initaliseRenderingSystem();
+	}
+	
+	public void start() {
+		if(isRunning){
+			return;
+		}
+		run();
+	}
+	
+	public void stop() {
+		if(!isRunning){
+			return;
+		}
+		isRunning = false;
+		
+	}
+	
+	private void run() {
+		isRunning = true;
+		int frames = 0;
+		long frameCounter = 0;
+		
+		game.init();
+		
+		//final double frameTime = 1.0 / FRAME_CAP;
+		
+		long lastTime = Time.getTime();
+		double unprocessedTime = 0;
+		
+		while(isRunning){
+			boolean render = false;
+			long startTime = Time.getTime();
+			long passedTime = startTime - lastTime;
+			lastTime = startTime;
+			unprocessedTime += passedTime / (double)Time.SECOND;
+			frameCounter += passedTime;
+			while(unprocessedTime > frameTime){
+				render = true;
+				unprocessedTime -=frameTime;
+				
+				//if closed, stop
+				if(Window.closed()){
+					stop();
+				}
+				Time.setDelta(frameTime);
+				Input.update();
+				game.input();
+				game.update();
+				
+				if(frameCounter >= Time.SECOND) {
+					System.out.println(frames);
+					frames = 0;
+					frameCounter = 0;
+				}
+			}
+			
+			if(render) {
+				render();
+				frames++;
+			} else {
+				try {
+				Thread.sleep(1);
+				} catch(InterruptedException e){
+					//TODO AUto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		cleanUp();
+	}
+	
+	private void render(){
+		RenderUtil.clearScreen();
+		game.render();
+		Window.loop();
+	}
+	
+	
+
+	private void cleanUp() {
+		Window.dispose();
+	}
+}
