@@ -1,6 +1,5 @@
 package com.base.core;
 
-import com.base.rendering.RenderUtil;
 import com.base.rendering.Window;
 
 //import static org.lwjgl.opengl.GL11.glClearColor;
@@ -10,6 +9,7 @@ import com.base.rendering.Window;
 public class CoreEngine {
 	private boolean isRunning;
 	private Game game;
+	private RenderingEngine renderingEngine;
 	private int width;
 	private int height;
 	private double frameTime;
@@ -21,14 +21,10 @@ public class CoreEngine {
 		this.height = height;
 		this.frameTime = 1.0/frameRate;
 	}
-	
-	private void initaliseRenderingSystem() {
-		RenderUtil.initGraphics();
-	}
-	
+
 	public void createWindow(String title) {
 		Window.createWindow(width, height, title);
-		initaliseRenderingSystem();
+		this.renderingEngine = new RenderingEngine();
 	}
 	
 	public void start() {
@@ -74,8 +70,11 @@ public class CoreEngine {
 					stop();
 				}
 				Time.setDelta(frameTime);
+				
 				Input.update();
 				game.input();
+				renderingEngine.input();
+				
 				game.update();
 				
 				if(frameCounter >= Time.SECOND) {
@@ -86,7 +85,8 @@ public class CoreEngine {
 			}
 			
 			if(render) {
-				render();
+				renderingEngine.render(game.getRootObject());
+				Window.render();
 				frames++;
 			} else {
 				try {
@@ -98,12 +98,6 @@ public class CoreEngine {
 			}
 		}
 		cleanUp();
-	}
-	
-	private void render(){
-		RenderUtil.clearScreen();
-		game.render();
-		Window.loop();
 	}
 	
 	

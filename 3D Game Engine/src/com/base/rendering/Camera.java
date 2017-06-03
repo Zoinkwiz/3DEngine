@@ -2,6 +2,7 @@ package com.base.rendering;
 import static org.lwjgl.glfw.GLFW.*;
 
 import com.base.core.Input;
+import com.base.core.Matrix4f;
 import com.base.core.Time;
 import com.base.core.Vector2f;
 import com.base.core.Vector3f;
@@ -10,11 +11,24 @@ public class Camera {
 	private Vector3f pos; //Current position
 	private Vector3f forward;
 	private Vector3f up;
+	private Matrix4f projection;
 	
 	
 	/** Create a base camera with pos (0,0,0), forward(0,0,1) and up (0,1,0)*/
-	public Camera() {
-		this(new Vector3f(0, 0, 0), new Vector3f(0, 0, 1), new Vector3f(0, 1, 0));
+	public Camera(float fov, float aspect, float zNear, float zFar) {
+		this.pos = new Vector3f(0,0,0);
+		this.forward = new Vector3f(0,0,1).normalized();
+		this.up = new Vector3f(0,1,0).normalized();
+		this.projection = new Matrix4f().initPerspective(fov, aspect, zNear, zFar);
+
+	}
+	
+	public Matrix4f getViewProjection() {
+		Matrix4f cameraRotation = new Matrix4f().initRotation(forward, up);
+		Matrix4f cameraTranslation = new Matrix4f().initTranslation(-pos.getX(), -pos.getY(), -pos.getZ());
+	
+		return projection.mul(cameraRotation.mul(cameraTranslation));
+
 	}
 	
 	public Camera(Vector3f pos, Vector3f forward, Vector3f up) {

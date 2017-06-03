@@ -8,10 +8,13 @@ import java.io.FileReader;
 import java.util.HashMap;
 
 import com.base.core.Matrix4f;
+import com.base.core.RenderingEngine;
+import com.base.core.Transform;
 import com.base.core.Util;
 import com.base.core.Vector3f;
 public class Shader {
 	
+	private RenderingEngine renderingEngine;
 	private int program;
 	private HashMap<String, Integer> uniforms;
 	
@@ -24,45 +27,16 @@ public class Shader {
 		}
 	}
 	
-	public void addVertexShaderFromFile(String text) {
-		addProgram(loadShader(text), GL_VERTEX_SHADER);
-	}
-	
-	public void addGeometryShaderFromFile(String text) {
-		addProgram(loadShader(text), GL_GEOMETRY_SHADER);
-	}
-	
-	public void addFragmentShaderFromFile(String text) {
-		addProgram(loadShader(text), GL_FRAGMENT_SHADER);
-	}
-	
-	private static String loadShader(String fileName) {
-		StringBuilder shaderSource = new StringBuilder();
-		BufferedReader shaderReader = null;
-		
-		try {
-			shaderReader = new BufferedReader(new FileReader("./res/shaders/" + fileName));
-			String line;
-			while((line = shaderReader.readLine()) != null) {
-				shaderSource.append(line).append("\n");
-			}
-			
-			shaderReader.close();
-		} catch(Exception e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
-		
-		return shaderSource.toString();
-	}
-	
 	public void bind() {
 		glUseProgram(program);
 	}
 	
-	public void updateUniforms(Matrix4f worldMatrix, Matrix4f projectedMatrix, Material material) {
+	
+	public void updateUniforms(Transform transform,  Material material) {
 		
 	}
+	
+
 	
 	public void addUniform(String uniform) {
 		int uniformLocation = glGetUniformLocation(program, uniform);
@@ -133,5 +107,45 @@ public class Shader {
 	public void setUniform(String uniformName, Matrix4f value) {
 		glUniformMatrix4fv(uniforms.get(uniformName), true, Util.createFlippedBuffer(value));
 		
+	}
+	
+	public void addVertexShaderFromFile(String text) {
+		addProgram(loadShader(text), GL_VERTEX_SHADER);
+	}
+	
+	public void addGeometryShaderFromFile(String text) {
+		addProgram(loadShader(text), GL_GEOMETRY_SHADER);
+	}
+	
+	public void addFragmentShaderFromFile(String text) {
+		addProgram(loadShader(text), GL_FRAGMENT_SHADER);
+	}
+	
+	private static String loadShader(String fileName) {
+		StringBuilder shaderSource = new StringBuilder();
+		BufferedReader shaderReader = null;
+		
+		try {
+			shaderReader = new BufferedReader(new FileReader("./res/shaders/" + fileName));
+			String line;
+			while((line = shaderReader.readLine()) != null) {
+				shaderSource.append(line).append("\n");
+			}
+			
+			shaderReader.close();
+		} catch(Exception e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+		
+		return shaderSource.toString();
+	}
+	
+	public void setRenderingEngine(RenderingEngine renderingEngine) {
+		this.renderingEngine = renderingEngine;
+	}
+	
+	public RenderingEngine getRenderingEngine() {
+		return renderingEngine;
 	}
 }

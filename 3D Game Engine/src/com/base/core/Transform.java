@@ -4,13 +4,6 @@ import com.base.rendering.Camera;
 
 public class Transform {
 	
-	private static Camera camera;
-	private static float zNear; //How close an object has to be to clip
-	private static float zFar; //How far can something be before clipping
-	private static float width;
-	private static float height;
-	private static float fov; //Field of view, gives perspective
-	
 	private Vector3f translation;
 	private Vector3f rotation;
 	private Vector3f scale;
@@ -28,22 +21,10 @@ public class Transform {
 		return translationMatrix.mul(rotationMatrix.mul(scaleMatrix));
 	}
 	
-	public Matrix4f getProjectedTransformation() {
-		Matrix4f transformationMatrix = getTransformation();
-		Matrix4f projectionMatrix = new Matrix4f().initProjection(fov, width, height, zNear, zFar);
-		Matrix4f cameraRotation = new Matrix4f().initCamera(camera.getForward(), camera.getUp());
-		Matrix4f cameraTranslation = new Matrix4f().initTranslation(-camera.getPos().getX(), -camera.getPos().getY(), -camera.getPos().getZ());
-		
-		return projectionMatrix.mul(cameraRotation.mul(cameraTranslation.mul(transformationMatrix)));
+	public Matrix4f getProjectedTransformation(Camera camera) {
+		return camera.getViewProjection().mul(getTransformation());
 	}
 	
-	public static void setProjection(float fov, float width, float height, float zNear, float zFar) {
-		Transform.fov = fov;
-		Transform.width = width;
-		Transform.height = height;
-		Transform.zNear = zNear;
-		Transform.zFar = zFar;
-	}
 
 	public Vector3f getTranslation() {
 		return translation;
@@ -81,11 +62,4 @@ public class Transform {
 		this.scale = new Vector3f(x, y, z);
 	}
 
-	public static Camera getCamera() {
-		return camera;
-	}
-
-	public static void setCamera(Camera camera) {
-		Transform.camera = camera;
-	}
 }
