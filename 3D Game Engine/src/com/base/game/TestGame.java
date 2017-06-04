@@ -2,28 +2,14 @@ package com.base.game;
 
 import com.base.core.Game;
 import com.base.core.GameObject;
-import com.base.core.Transform;
 import com.base.core.Vector2f;
 import com.base.core.Vector3f;
-import com.base.rendering.Attenuation;
-import com.base.rendering.BaseLight;
-import com.base.rendering.BasicShader;
-import com.base.rendering.Camera;
-import com.base.rendering.Material;
-import com.base.rendering.Mesh;
-import com.base.rendering.PointLight;
-import com.base.rendering.SpotLight;
-import com.base.rendering.Texture;
-import com.base.rendering.Vertex;
-import com.base.rendering.Window;
+import com.base.engine.components.*;
+import com.base.rendering.*;
 
 public class TestGame extends Game {
-//	private Camera camera;
-	
-	public void init() {
 
-//		camera = new Camera();
-	
+	public void init() {
 		float fieldDepth = 10.0f;
 		float fieldWidth = 10.0f;
 		
@@ -43,25 +29,18 @@ public class TestGame extends Game {
 		
 		GameObject planeObject = new GameObject();
 		planeObject.addComponent(meshRenderer);
-		planeObject.getTransform().setTranslation(0, -1, 5);
+		planeObject.getTransform().setPos(0, -1, 5);
+		
+		GameObject directionalLightObject = new GameObject();
+		DirectionalLight directionalLight = new DirectionalLight(new BaseLight(new Vector3f(0,0,1), 0.4f), new Vector3f(1,1,1));
+		directionalLightObject.addComponent(directionalLight);
+		
+		GameObject pointLightObject = new GameObject();
+		pointLightObject.addComponent(new PointLight(new BaseLight(new Vector3f(0,1,0), 0.6f), new Attenuation(0,0,1), new Vector3f(5,0,5), 100));
 		
 		getRootObject().addChild(planeObject);
+		getRootObject().addChild(directionalLightObject);
+		getRootObject().addChild(pointLightObject);
 		
-		//Transform.setProjection(70f, Window.getHeight(), Window.getWidth(), 0.1f, 1000f);
-		//Transform.setCamera(camera);
 	}
-	
-//	public void input() {
-//		camera.input();
-//		root.input();
-//	}
-//	
-//	public void update() {
-//		root.getTransform().setTranslation(0, -1, 5);
-//		root.update();
-//	}
-//	
-//	public void render() {
-//		root.render();
-//	}
 }

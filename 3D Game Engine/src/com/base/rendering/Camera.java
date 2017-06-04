@@ -3,7 +3,6 @@ import static org.lwjgl.glfw.GLFW.*;
 
 import com.base.core.Input;
 import com.base.core.Matrix4f;
-import com.base.core.Time;
 import com.base.core.Vector2f;
 import com.base.core.Vector3f;
 public class Camera {
@@ -39,10 +38,11 @@ public class Camera {
 
 	private boolean mouseLocked = false;
 	private Vector2f centrePos = Window.getCentre();
-	public void input() {
+	
+	public void input(float delta) {
 		float sensitivity = 0.5f;
-		float movAmt = (float)(10 * Time.getDelta());
-		float rotAmt = (float)(100 * Time.getDelta());
+		float movAmt = (float)(10 * delta);
+		float rotAmt = (float)(100 * delta);
 		
 		if(Input.getKeyHeld(GLFW_KEY_W)) {
 			move(getForward(), movAmt);

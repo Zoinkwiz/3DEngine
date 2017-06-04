@@ -3,6 +3,8 @@ package com.base.rendering;
 import com.base.core.Matrix4f;
 import com.base.core.Transform;
 import com.base.core.Vector3f;
+import com.base.engine.components.DirectionalLight;
+import com.base.engine.components.PointLight;
 
 //import static org.lwjgl.opengl.GL20.glUniform1i;
 

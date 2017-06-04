@@ -1,6 +1,7 @@
 package com.base.rendering;
 
 import com.base.core.Vector3f;
+import com.base.engine.components.PointLight;
 
 public class SpotLight {
 	private PointLight pointLight;

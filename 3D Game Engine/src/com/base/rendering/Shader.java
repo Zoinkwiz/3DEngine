@@ -52,6 +52,11 @@ public class Shader {
 		
 	}
 	
+	public void setAttribLocation(String attributeName, int location) {
+		glBindAttribLocation(program, location, attributeName); //THIS IS AS USING EARLY VERSION GSL
+
+	}
+	
 	
 	public void compileShader() {
 		glLinkProgram(program);
