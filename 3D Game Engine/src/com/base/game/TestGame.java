@@ -57,6 +57,7 @@ public class TestGame extends Game {
 		spotLightObject.addComponent(spotLight);
 		
 		
+		
 		spotLight.getTransform().getPos().set(5,0,5);
 		spotLight.getTransform().setRot(new Quaternion(new Vector3f(0,1,0), (float)Math.toRadians(90)));
 		
