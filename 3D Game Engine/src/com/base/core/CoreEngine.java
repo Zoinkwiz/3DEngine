@@ -1,5 +1,6 @@
 package com.base.core;
 
+import com.base.rendering.RenderingEngine;
 import com.base.rendering.Window;
 
 //import static org.lwjgl.opengl.GL11.glClearColor;
@@ -72,7 +73,7 @@ public class CoreEngine {
 				
 				Input.update();
 				game.input((float)frameTime);
-				renderingEngine.input((float)frameTime);
+//				renderingEngine.input((float)frameTime);
 				
 				game.update((float)frameTime);
 				

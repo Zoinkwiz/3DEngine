@@ -8,7 +8,6 @@ import java.io.FileReader;
 import java.util.HashMap;
 
 import com.base.core.Matrix4f;
-import com.base.core.RenderingEngine;
 import com.base.core.Transform;
 import com.base.core.Util;
 import com.base.core.Vector3f;

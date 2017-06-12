@@ -1,54 +1,59 @@
 package com.base.engine.components;
 
-import com.base.core.RenderingEngine;
 import com.base.core.Vector3f;
-import com.base.rendering.Attenuation;
-import com.base.rendering.BaseLight;
+import com.base.rendering.ForwardPoint;
 
-public class PointLight extends GameComponent {
+public class PointLight extends BaseLight {
 
-	private BaseLight baseLight;
-	private Attenuation atten;
-	private Vector3f position;
+	private static final int COLOUR_DEPTH = 256;
+	
+	private Vector3f attenuation;
 	private float range;
 	
-	public PointLight(BaseLight baseLight, Attenuation atten, Vector3f position, float range) {
-		this.baseLight = baseLight;
-		this.atten = atten;
-		this.position = position;
-		this.range = range;
+	public PointLight(Vector3f colour, float intensity, Vector3f attenuation) {
+		super(colour, intensity);
+		this.attenuation = attenuation;
+		
+		float a = attenuation.getZ();
+		float b = attenuation.getY();
+		float c = attenuation.getX() - COLOUR_DEPTH * getIntensity() * getColour().max();
+		//DON'T DO NEGATIVE ATTENUATION
+		this.range = (float)(-b + Math.sqrt(b*b - 4*a*c))/(2*a);
+		
+		setShader(ForwardPoint.getInstance());
 	}
 	
-	@Override
-	public void addToRenderingEngine(RenderingEngine renderingEngine) {
-		renderingEngine.addPointLight(this);
+	
+	public float getConstant() {
+		return attenuation.getX();
 	}
-	
-	
-	public BaseLight getBaseLight() {
-		return baseLight;
+
+
+	public void setConstant(float constant) {
+		this.attenuation.setX(constant);
 	}
-	
-	public void setBaseLight(BaseLight baseLight) {
-		this.baseLight = baseLight;
+
+
+	public float getLinear() {
+		return attenuation.getY();
 	}
-	
-	public Attenuation getAtten() {
-		return atten;
+
+
+	public void setLinear(float linear) {
+		this.attenuation.setY(linear);
 	}
-	
-	public void setAtten(Attenuation atten) {
-		this.atten = atten;
+
+
+	public float getExponent() {
+		return attenuation.getZ();
 	}
-	
-	public Vector3f getPosition() {
-		return position;
+
+
+	public void setExponent(float exponent) {
+		this.attenuation.setZ(exponent);
 	}
-	
-	public void setPosition(Vector3f position) {
-		this.position = position;
-	}
-	
+
+
 	public float getRange() {
 		return range;
 	}

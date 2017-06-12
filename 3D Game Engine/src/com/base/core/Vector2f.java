@@ -13,6 +13,11 @@ public class Vector2f {
 		return (float)Math.sqrt(x*x + y*y);
 	}
 	
+	public float max() {
+		return Math.max(x, y);
+		
+	}
+	
 	public float dot(Vector2f r) {
 		return (x * r.getX() + y* r.getY());
 	}
@@ -73,6 +78,9 @@ public class Vector2f {
 	public String toString() {
 		return "(" + x + " " + y + "y" + ")";
 	}
+	
+	public void set(float x, float y) { this.x = x; this.y = y; }
+	public Vector2f set(Vector2f r) { set(r.getX(), r.getY()); return this;}
 	
 	public float getX() {
 		return x;
