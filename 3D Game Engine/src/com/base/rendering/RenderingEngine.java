@@ -50,9 +50,9 @@ public class RenderingEngine {
 		object.addToRenderingEngine(this);
 		
 		Shader forwardAmbient = ForwardAmbient.getInstance();
-		forwardAmbient.setRenderingEngine(this);
+		//forwardAmbient.setRenderingEngine(this);
 		
-		object.render(forwardAmbient);
+		object.render(forwardAmbient, this);
 		
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_ONE, GL_ONE); //Add together values
@@ -60,11 +60,10 @@ public class RenderingEngine {
 		glDepthFunc(GL_EQUAL); //Only creates pixel if same depth value as current one.
 		
 		for(BaseLight light : lights) {
-			light.getShader().setRenderingEngine(this);
-			
+
 			activeLight = light;
 			
-			object.render(light.getShader());
+			object.render(light.getShader(), this);
 		}
 
 		
@@ -84,13 +83,6 @@ public class RenderingEngine {
 		return glGetString(GL_VERSION);
 	}
 	
-//	public void addDirectionalLight(DirectionalLight directionalLight) {
-//		directionalLights.add(directionalLight);
-//	}
-//	
-//	public void addPointLight(PointLight pointLight) {
-//		pointLights.add(pointLight);
-//	}
 	
 	public void addLight(BaseLight light) {
 		lights.add(light);
@@ -102,8 +94,10 @@ public class RenderingEngine {
 	
 	public BaseLight getActiveLight() { return activeLight; }
 
-	public Camera getMainCamera() { return mainCamera; }
-
+	
+	public Camera getMainCamera() {
+		return mainCamera;
+	}
 	public void setMainCamera(Camera mainCamera) { this.mainCamera = mainCamera; }
 	
 	

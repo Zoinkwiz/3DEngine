@@ -1,4 +1,7 @@
 package com.base.core;
+
+import com.base.rendering.RenderingEngine;
+
 //import static org.lwjgl.glfw.Callbacks.*;
 //import static org.lwjgl.glfw.GLFW.*;
 
@@ -7,11 +10,9 @@ package com.base.core;
 //import static org.lwjgl.opengl.GL11.*;
 //import static org.lwjgl.system.MemoryUtil.*;
 public abstract class Game {
-	private GameObject root;
+	private GameObject root = new GameObject();
 	
-	public void init() {
-		
-	}
+	public void init() {}
 	
 	public void input(float delta) {
 		getRootObject().input(delta);
@@ -21,7 +22,15 @@ public abstract class Game {
 		getRootObject().update(delta);
 	}
 	
-	public GameObject getRootObject() {
+	public void render(RenderingEngine renderingEngine) {
+		renderingEngine.render(root);
+	}
+	
+	public void addObject(GameObject object) {
+		getRootObject().addChild(object);
+	}
+	
+	private GameObject getRootObject() {
 		if(root==null) {
 			root = new GameObject();
 		}
