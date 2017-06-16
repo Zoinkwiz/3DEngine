@@ -10,6 +10,7 @@ public class Input {
 	private static ArrayList<Integer> keysUp = new ArrayList<Integer>();
 	private static ArrayList<Integer> keysDown = new ArrayList<Integer>();
 	private static ArrayList<Integer> keysHeld = new ArrayList<Integer>();
+	private static int scrollAmount = 0;
 	private static Vector2f currentMousePos = getMousePosition();
 	public static void update() {
 		keysHeld.remove(KeyInput.getUpKeys()); //Remove keys that have been let go
@@ -30,7 +31,14 @@ public class Input {
 		
 		currentMousePos = getMousePosition();
 		
+		scrollAmount = ScrollingInput.getScrollQuantity();
+		
 		keyResult();
+	}
+	
+	/** returns amount scrolled in current frame **/
+	public static int getScrollQuantity() {
+		return scrollAmount;
 	}
 	
 	 

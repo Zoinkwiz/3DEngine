@@ -30,7 +30,6 @@ public class TerrainGenTestGame extends Game {
 		int[] indices = new int[] { 0,1,2,
 				2,1,3};
 		
-		Mesh meshRec = new Mesh(vertices, indices, true);
 		Mesh meshTest = new Mesh(vertices, indices, true);
 		MeshRenderer meshRendererTest = new MeshRenderer(meshTest, material);
 		testPlane = new GameObject("testPlane");
@@ -42,11 +41,11 @@ public class TerrainGenTestGame extends Game {
 		GameObject directionalLightObject = new GameObject("DirectionaLight");
 		DirectionalLight directionalLight = new DirectionalLight(new Vector3f(64.0f/255.0f, 156.0f/255.0f, 255.0f/255.0f), 0.4f);
 		directionalLightObject.addComponent(directionalLight);
-	//	directionalLightObject.getTransform().setRot(new Quaternion(new Vector3f(1,0,0),(float)Math.toRadians(-90)));
+		directionalLightObject.getTransform().setRot(new Quaternion(new Vector3f(1,0,0),(float)Math.toRadians(-90)));
 		directionalLight.getTransform().setRot(new Quaternion(new Vector3f(1,0,0),(float)Math.toRadians(-45)));
 
 
-		Mesh mesh = TerrainGeneration.generateSin(100, 100);
+		Mesh mesh = TerrainGeneration.generatePerlin(100, 100, 1f);
 		MeshRenderer meshRenderer = new MeshRenderer(mesh, material);
 		planeObject = new GameObject("Terrain");
 		planeObject.addComponent(meshRenderer);
@@ -56,8 +55,7 @@ public class TerrainGenTestGame extends Game {
 		
 		GameObject cameraObject = new GameObject("Camera").addComponent(new FreeLook(0.5f)).addComponent(new FreeMove(10)).addComponent(new Camera((float)Math.toRadians(70.0f), (float)Window.getWidth()/(float)Window.getHeight(), 0.01f, 1000.0f));
 		addObject(cameraObject);
-		cameraObject.getTransform().setPos(50, 70, 50);
-	//	removeObject(planeObject);
+		cameraObject.getTransform().setPos(50, 200, 50);
 	}
 
 	int presses = 0;
@@ -66,16 +64,17 @@ public class TerrainGenTestGame extends Game {
 		super.update(delta);
 		if(Input.getKeyUp(GLFW_KEY_SPACE) && presses==0) {
 			presses = 1;
-//			Mesh mesh = TerrainGeneration.generateSin(10, 10);
-// 			Material material = new Material();//(new Texture("test.png"), new Vector3f(1,1,1), 1, 8);
-//			material.addTexture("diffuse", new Texture("test.png"));
-//			material.addFloat("specularIntensity", 1.0f);
-//			material.addFloat("specularPower", 8.0f);
+		    removeObject(planeObject);
+			Mesh meshx = TerrainGeneration.generatePerlin(100, 100, 100f);
+			Material materialx = new Material();//(new Texture("test.png"), new Vector3f(1,1,1), 1, 8);
+			materialx.addTexture("diffuse", new Texture("test.png"));
+			materialx.addFloat("specularIntensity", 1.0f);
+			materialx.addFloat("specularPower", 8.0f);
 			
-//			MeshRenderer meshRenderer = new MeshRenderer(mesh, material);
-//			planeObject = new GameObject();
-//			planeObject.addComponent(meshRenderer);
-//			addObject(planeObject);
+			MeshRenderer meshRenderex = new MeshRenderer(meshx, materialx);
+			planeObject = new GameObject();
+			planeObject.addComponent(meshRenderex);
+			addObject(planeObject);
 			
 		}
 	}

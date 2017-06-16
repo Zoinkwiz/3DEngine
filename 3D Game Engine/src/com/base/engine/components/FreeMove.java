@@ -19,8 +19,7 @@ public class FreeMove extends GameComponent {
 		this(speed, GLFW_KEY_W, GLFW_KEY_S, GLFW_KEY_A, GLFW_KEY_D);
 	}
 
-	public FreeMove(float speed, int forwardKey, int backKey, int leftKey, int rightKey)
-	{
+	public FreeMove(float speed, int forwardKey, int backKey, int leftKey, int rightKey) {
 		this.speed = speed;
 		this.forwardKey = forwardKey;
 		this.backKey = backKey;
@@ -45,6 +44,7 @@ public class FreeMove extends GameComponent {
 		if(Input.getKeyHeld(rightKey)) {
 			move(getTransform().getRot().getRight(), movAmt);
 		}
+		this.speed +=(Input.getScrollQuantity()*10);
 	}	
 	
 	public void move(Vector3f dir, float amt) {

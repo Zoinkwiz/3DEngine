@@ -17,8 +17,10 @@ public class MeshResource {
 
 	@Override
 	protected void finalize() {
-		glDeleteBuffers(vbo);
-		glDeleteBuffers(ibo);
+//		System.out.println("WAOW MeshResource start die");
+//		glDeleteBuffers(vbo);
+//		glDeleteBuffers(ibo);
+//		System.out.println("WAOW MeshResource finish die");
 	}
 
 	public void addReference() {

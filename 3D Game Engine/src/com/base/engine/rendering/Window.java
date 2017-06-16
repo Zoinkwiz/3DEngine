@@ -8,6 +8,7 @@ import com.base.engine.core.Vector2f;
 import com.base.engine.core.input.KeyInput;
 import com.base.engine.core.input.MouseButtonInput;
 import com.base.engine.core.input.MousePosInput;
+import com.base.engine.core.input.ScrollingInput;
 import com.base.engine.core.input.WindowScaling;
 
 import java.nio.*;
@@ -28,6 +29,8 @@ public class Window {
 	private static GLFWCursorPosCallback mousePosCallback;
 	@SuppressWarnings("unused")	
 	private static GLFWWindowSizeCallback windowSizeCallback;
+	
+	private static GLFWScrollCallback scrollCallback;
 	
 	private static int width;
 	private static int height;
@@ -60,6 +63,7 @@ public class Window {
 		glfwSetMouseButtonCallback(window, mouseClickCallback = new MouseButtonInput());
 		glfwSetCursorPosCallback(window, mousePosCallback = new MousePosInput());
 		glfwSetWindowSizeCallback(window, windowSizeCallback = new WindowScaling());
+		glfwSetScrollCallback(window, scrollCallback = new ScrollingInput());
 //		// Get the thread stack and push a new frame
 		try ( MemoryStack stack = stackPush() ) {
 			IntBuffer pWidth = stack.mallocInt(1); // int*
