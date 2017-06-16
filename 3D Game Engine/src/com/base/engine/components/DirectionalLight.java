@@ -1,14 +1,13 @@
 package com.base.engine.components;
 
-import com.base.core.*;
-import com.base.rendering.ForwardDirectional;
+import com.base.engine.core.*;
+import com.base.engine.rendering.Shader;
 
-//Not inheriting due to GLSL being unable to do inheritence
+/** Directional Light creator. Extends BaseLight. **/
 public class DirectionalLight extends BaseLight {
 	public DirectionalLight(Vector3f colour, float intensity) {
 		super(colour, intensity);
-		
-		setShader(ForwardDirectional.getInstance());
+		setShader(new Shader("forward-directional"));
 	}
 	
 
