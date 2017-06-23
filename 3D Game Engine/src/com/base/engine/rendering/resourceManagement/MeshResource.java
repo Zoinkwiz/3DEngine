@@ -15,13 +15,13 @@ public class MeshResource {
 		this.refCount = 1;
 	}
 
-	@Override
-	protected void finalize() {
+//	@Override
+//	protected void finalize() {
 //		System.out.println("WAOW MeshResource start die");
 //		glDeleteBuffers(vbo);
 //		glDeleteBuffers(ibo);
 //		System.out.println("WAOW MeshResource finish die");
-	}
+//	}
 
 	public void addReference() {
 		refCount++;

@@ -24,12 +24,12 @@ public abstract class Game {
 		}
 	}
 	
-	public void addObject(GameObject object) {
+	public void addToScene(GameObject object) {
 		getRootObject().addChild(object);
 	}
 	
 	//TODO: Confirm works, WIP
-	public void removeObject(GameObject object) {
+	public void removeFromScene(GameObject object) {
 		getRootObject().removeChild(object);
 	}
 	

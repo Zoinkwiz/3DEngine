@@ -14,6 +14,7 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11.GL_VERSION;
 import static org.lwjgl.opengl.GL32.GL_DEPTH_CLAMP;
 
+
 public class RenderingEngine extends MappedValues {
 	private HashMap<String, Integer> samplerMap;
 	private ArrayList<BaseLight> lights;
@@ -26,9 +27,11 @@ public class RenderingEngine extends MappedValues {
 		super();
 		lights = new ArrayList<BaseLight>();
 		samplerMap = new HashMap<String, Integer>();
-		samplerMap.put("diffuse", 0);
-
-		addVector3f("ambient", new Vector3f(0.1f, 0.1f, 0.1f));
+		samplerMap.put("diffuse", 0); //Only made diffuse surface currently. 
+		samplerMap.put("normalMap", 1); //Only made diffuse surface currently.
+		samplerMap.put("dispMap", 2); 
+		
+		addVector3f("ambient", new Vector3f(0.5f, 0.5f, 0.5f));
 
 		forwardAmbient = new Shader("forward-ambient");
 
@@ -38,10 +41,9 @@ public class RenderingEngine extends MappedValues {
 		glCullFace(GL_BACK);
 		glEnable(GL_CULL_FACE);
 		glEnable(GL_DEPTH_TEST);
-
 		glEnable(GL_DEPTH_CLAMP);
 
-		glEnable(GL_TEXTURE_2D);
+//		glEnable(GL_TEXTURE_2D);
 	}
 
 	public void updateUniformStruct(Transform transform, Material material, Shader shader, String uniformName, String uniformType) {
@@ -50,10 +52,6 @@ public class RenderingEngine extends MappedValues {
 
 	public void render(GameObject object) {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-//		lights.clear();
-//		object.addToRenderingEngine(this);
-
 		object.renderAll(forwardAmbient, this);
 
 		glEnable(GL_BLEND);
@@ -66,8 +64,8 @@ public class RenderingEngine extends MappedValues {
 			object.renderAll(light.getShader(), this);
 		}
 
-		glDepthFunc(GL_LESS);
 		glDepthMask(true);
+		glDepthFunc(GL_LESS);
 		glDisable(GL_BLEND);
 	}
 

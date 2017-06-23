@@ -171,4 +171,8 @@ public class Window {
 	public static Vector2f getCentre() {
 		return new Vector2f(width/2,height/2);
 	}
+	
+	public static float getAspect() {
+		return (float)getWidth()/(float)getHeight();
+	}
 }

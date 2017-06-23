@@ -108,7 +108,8 @@ public class Transform {
 	public void setRot(Vector3f axis, float angle) { this.rot = new Quaternion(axis, angle); }
 
 	public Vector3f getScale() { return scale; }
-
+	
+	public void setScale(float scale) { this.scale = new Vector3f(scale, scale, scale); }
 	public void setScale(Vector3f scale) { this.scale = scale; }
 	public void setScale(float x, float y, float z) { this.scale = new Vector3f(x, y, z); }	
 

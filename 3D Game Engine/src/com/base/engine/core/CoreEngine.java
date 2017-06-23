@@ -47,15 +47,14 @@ public class CoreEngine {
 		
 		isRunning = true;
 		
-		int frames = 0;
-		long frameCounter = 0;
-		
 		game.init();
 		
 		//final double frameTime = 1.0 / FRAME_CAP;
 		
 		double lastTime = Time.getTime();
 		double unprocessedTime = 0;
+		double frameCounter = 0;
+		int frames = 0;
 		
 		while(isRunning){
 			boolean render = false;
@@ -65,27 +64,28 @@ public class CoreEngine {
 			lastTime = startTime;
 			
 			unprocessedTime += passedTime;
-			frameCounter += passedTime;
+			frameCounter += passedTime;		
+			if(frameCounter >= 1.0) {
+				System.out.println("Frames are : " + frames);
+				frames = 0;
+				frameCounter = 0;
+			}
 			
 			while(unprocessedTime > frameTime){
 				render = true;
-				unprocessedTime -=frameTime;
 				
 				//if closed, stop
 				if(Window.closed()){
 					stop();
 				}
 				
-				game.input((float)frameTime);
 				Input.update();
 				
+				game.input((float)frameTime);
 				game.update((float)frameTime);
 				
-				if(frameCounter >= 1.0) {
-					System.out.println(frames);
-					frames = 0;
-					frameCounter = 0;
-				}
+				unprocessedTime -=frameTime;
+				
 			}
 			
 			if(render) {

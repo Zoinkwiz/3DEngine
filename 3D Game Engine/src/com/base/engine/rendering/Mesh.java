@@ -53,7 +53,7 @@ public class Mesh {
 		}
 
 		resource = new MeshResource(indices.length);
-		
+		System.out.println();
 		glBindBuffer(GL_ARRAY_BUFFER, resource.getVbo());
 		glBufferData(GL_ARRAY_BUFFER, Util.createFlippedBuffer(vertices), GL_STATIC_DRAW);
 		
@@ -68,11 +68,13 @@ public class Mesh {
 		glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);
 		glEnableVertexAttribArray(2);
+		glEnableVertexAttribArray(3);
 		
 		glBindBuffer(GL_ARRAY_BUFFER, resource.getVbo());
 		glVertexAttribPointer(0, 3, GL_FLOAT, false, Vertex.SIZE * 4, 0);
-		glVertexAttribPointer(1, 2, GL_FLOAT, false, Vertex.SIZE * 4, 12);
+		glVertexAttribPointer(1, 2, GL_FLOAT, false, Vertex.SIZE * 4, 12); //Vector3f
 		glVertexAttribPointer(2, 3, GL_FLOAT, false, Vertex.SIZE * 4, 20);
+		glVertexAttribPointer(3, 3, GL_FLOAT, false, Vertex.SIZE * 4, 32);	
 		
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, resource.getIbo());
 		glDrawElements(GL_TRIANGLES, resource.getSize(), GL_UNSIGNED_INT, 0);
@@ -80,6 +82,7 @@ public class Mesh {
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);
 		glDisableVertexAttribArray(2);
+		glDisableVertexAttribArray(3);
 	}
 	
 	private void calcNormals(Vertex[] vertices, int[] indices) {
@@ -108,21 +111,22 @@ public class Mesh {
 		String ext = splitArray[splitArray.length - 1];
 
 		if(!ext.equals("obj")) {
-			System.err.println("Error: File format not supported for mesh data: " + ext);
+			System.err.println("Error: '" + ext + "' file format not supported for mesh data.");
 			new Exception().printStackTrace();
 			System.exit(1);
 		}
 
 		OBJModel test = new OBJModel("./res/models/" + fileName);
 		IndexedModel model = test.toIndexedModel();
-		model.calcNormals();
 
 		ArrayList<Vertex> vertices = new ArrayList<Vertex>();
 
-		for(int i = 0; i < model.getPositions().size(); i++) {
+		for(int i = 0; i < model.getPositions().size(); i++)
+		{
 			vertices.add(new Vertex(model.getPositions().get(i),
 					model.getTexCoords().get(i),
-					model.getNormals().get(i)));
+					model.getNormals().get(i),
+					model.getTangents().get(i)));
 		}
 
 		Vertex[] vertexData = new Vertex[vertices.size()];
@@ -133,6 +137,6 @@ public class Mesh {
 
 		addVertices(vertexData, Util.toIntArray(indexData), false);
 		
-		return null;
+return this;
 	}
 }

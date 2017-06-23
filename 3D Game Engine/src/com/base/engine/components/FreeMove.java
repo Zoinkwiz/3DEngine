@@ -15,6 +15,10 @@ public class FreeMove extends GameComponent {
 	private int   leftKey;
 	private int   rightKey;
 
+	public FreeMove() {
+		this(10.0f, GLFW_KEY_W, GLFW_KEY_S, GLFW_KEY_A, GLFW_KEY_D);
+	}
+	
 	public FreeMove(float speed) {
 		this(speed, GLFW_KEY_W, GLFW_KEY_S, GLFW_KEY_A, GLFW_KEY_D);
 	}

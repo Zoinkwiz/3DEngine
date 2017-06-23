@@ -12,6 +12,8 @@ public class TerrainGenTestGame extends Game {
 	GameObject planeObject;
 	GameObject testPlane;
 	
+	//public final int 
+	
 	public void init() {
 		float fieldDepth = 10.0f;
 		float fieldWidth = 10.0f;
@@ -34,7 +36,7 @@ public class TerrainGenTestGame extends Game {
 		MeshRenderer meshRendererTest = new MeshRenderer(meshTest, material);
 		testPlane = new GameObject("testPlane");
 		testPlane.addComponent(meshRendererTest);
-		addObject(testPlane);	
+		addToScene(testPlane);	
 		
 		testPlane.getTransform().setPos(0, 40, 0);
 		
@@ -44,18 +46,23 @@ public class TerrainGenTestGame extends Game {
 		directionalLightObject.getTransform().setRot(new Quaternion(new Vector3f(1,0,0),(float)Math.toRadians(-90)));
 		directionalLight.getTransform().setRot(new Quaternion(new Vector3f(1,0,0),(float)Math.toRadians(-45)));
 
+		
+		Material materialMix = new Material();//(new Texture("test.png"), new Vector3f(1,1,1), 1, 8);
+		materialMix.addTexture("diffuse", new Texture("mix.png"));
+		materialMix.addFloat("specularIntensity", 1.0f);
+		materialMix.addFloat("specularPower", 8.0f);
 
-		Mesh mesh = TerrainGeneration.generatePerlin(100, 100, 1f);
-		MeshRenderer meshRenderer = new MeshRenderer(mesh, material);
+		Mesh mesh = TerrainGeneration.generatePerlinNoise(-5000, 5000, -5000, 5000, 1000f, 1000, TerrainGeneration.PERLIN);
+		MeshRenderer meshRenderer = new MeshRenderer(mesh, materialMix);
 		planeObject = new GameObject("Terrain");
 		planeObject.addComponent(meshRenderer);
-		addObject(planeObject);		
+		addToScene(planeObject);		
 		
-		addObject(directionalLightObject);
+		addToScene(directionalLightObject);
 		
-		GameObject cameraObject = new GameObject("Camera").addComponent(new FreeLook(0.5f)).addComponent(new FreeMove(10)).addComponent(new Camera((float)Math.toRadians(70.0f), (float)Window.getWidth()/(float)Window.getHeight(), 0.01f, 1000.0f));
-		addObject(cameraObject);
-		cameraObject.getTransform().setPos(50, 200, 50);
+		GameObject cameraObject = new GameObject("Camera").addComponent(new FreeLook(0.5f)).addComponent(new FreeMove(10)).addComponent(new Camera((float)Math.toRadians(70.0f), (float)Window.getWidth()/(float)Window.getHeight(), 0.01f, 8000.0f));
+		addToScene(cameraObject);
+		cameraObject.getTransform().setPos(0, 20, 0);
 	}
 
 	int presses = 0;
@@ -64,8 +71,8 @@ public class TerrainGenTestGame extends Game {
 		super.update(delta);
 		if(Input.getKeyUp(GLFW_KEY_SPACE) && presses==0) {
 			presses = 1;
-		    removeObject(planeObject);
-			Mesh meshx = TerrainGeneration.generatePerlin(100, 100, 100f);
+		    removeFromScene(planeObject);
+			Mesh meshx = TerrainGeneration.generatePerlinNoise(-5000, 5000, -5000, 5000, 1000f, 1000, TerrainGeneration.BILLOW);
 			Material materialx = new Material();//(new Texture("test.png"), new Vector3f(1,1,1), 1, 8);
 			materialx.addTexture("diffuse", new Texture("test.png"));
 			materialx.addFloat("specularIntensity", 1.0f);
@@ -74,7 +81,7 @@ public class TerrainGenTestGame extends Game {
 			MeshRenderer meshRenderex = new MeshRenderer(meshx, materialx);
 			planeObject = new GameObject();
 			planeObject.addComponent(meshRenderex);
-			addObject(planeObject);
+			addToScene(planeObject);
 			
 		}
 	}

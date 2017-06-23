@@ -16,9 +16,13 @@ public class FreeLook extends GameComponent {
 	
 	private float   sensitivity;
 
+	public FreeLook() {
+		this.sensitivity = 0.5f;
+	}
+	
 	public FreeLook(float sensitivity) {
 		this.sensitivity = sensitivity;
-}
+	}
 	
 	@Override
 	public void input(float delta) {

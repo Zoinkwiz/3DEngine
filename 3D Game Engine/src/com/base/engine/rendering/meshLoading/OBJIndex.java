@@ -28,4 +28,13 @@ public class OBJIndex
 
 		return result;
 	}
+	
+	public int getVertexIndex()   { return vertexIndex; }
+	public int getTexCoordIndex() { return texCoordIndex; }
+	public int getNormalIndex()   { return normalIndex; }
+
+	public void setVertexIndex(int val)   { vertexIndex = val; }
+	public void setTexCoordIndex(int val) { texCoordIndex = val; }
+	public void setNormalIndex(int val)   { normalIndex = val; }
+
 }

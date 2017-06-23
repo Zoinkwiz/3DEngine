@@ -9,6 +9,10 @@ public class Camera extends GameComponent {
 	float zNear;
 	float zFar;
 	
+	public Camera(Matrix4f projection) {
+		this.projection = projection;
+	}
+	
 	/** Camera needs radians for fov **/
 	public Camera(float fov, float aspect, float zNear, float zFar) {
 		this.fov = fov;
@@ -18,6 +22,7 @@ public class Camera extends GameComponent {
 		this.projection = new Matrix4f().initPerspective(fov, aspect, zNear, zFar);
 	}
 	
+	//Updates perspective
 	@Override
 	public void update(float delta) {
 		this.aspect = (float)Window.getWidth()/(float)Window.getHeight();
